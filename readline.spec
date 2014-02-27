@@ -1,23 +1,22 @@
-%define		ver		6.2
-%define		patchlevel	004
-#
+%define		ver		6.3
+%define		patchlevel	0
+
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	%{ver}.%{patchlevel}
-Release:	2
+Version:	%{ver}%{?patchlevel:.%{patchlevel}}
+Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{ver}.tar.gz
-# Source0-md5:	67948acb2ca081f23359d0256e9a271c
+# Source0-md5:	33c8fb279e981274f485fd91da77e94a
 Source1:	%{name}-sys_inputrc
-Patch0:		%{name}-lfs.patch
-Patch1000:	%{name}-patchlevel-%{patchlevel}.patch
+#Patch1000:	%{name}-patchlevel-%{patchlevel}.patch
 URL:		http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	ncurses-devel
 BuildRequires:	texinfo
-Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	/usr/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -41,8 +40,7 @@ only the text of the line remains.
 
 %prep
 %setup -qn %{name}-%{ver}
-%patch1000 -p0
-%patch0 -p0
+#%patch1000 -p0
 
 %build
 cp -f /usr/share/automake/config.sub support
@@ -54,7 +52,7 @@ mv -f aclocal.m4 acinclude.m4
 	--with-curses
 %{__make} SHLIB_LIBS=-lncurses
 
-rm -f doc/*.info
+%{__rm} doc/*.info
 %{__make} -C doc info
 
 %install
@@ -66,7 +64,7 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/inputrc
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/*old
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/*old
 
 # rpm auto deps
 chmod +x $RPM_BUILD_ROOT%{_libdir}/lib*.so*
@@ -75,11 +73,11 @@ chmod +x $RPM_BUILD_ROOT%{_libdir}/lib*.so*
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
+/usr/sbin/ldconfig
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
 %postun
-/sbin/ldconfig
+/usr/sbin/ldconfig
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
 %files

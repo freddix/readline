@@ -1,5 +1,5 @@
 %define		ver		6.3
-%define		patchlevel	0
+%define		patchlevel	5
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
@@ -11,6 +11,7 @@ Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{ver}.tar.gz
 # Source0-md5:	33c8fb279e981274f485fd91da77e94a
 Source1:	%{name}-sys_inputrc
 #Patch1000:	%{name}-patchlevel-%{patchlevel}.patch
+%patchset_source -f http://ftp.gnu.org/gnu/readline/readline-6.3-patches/readline63-%03g 1 %{patchlevel}
 URL:		http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -41,6 +42,7 @@ only the text of the line remains.
 %prep
 %setup -qn %{name}-%{ver}
 #%patch1000 -p0
+%patchset_patch -p2 1 %{patchlevel}
 
 %build
 cp -f /usr/share/automake/config.sub support

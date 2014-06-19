@@ -1,16 +1,15 @@
 %define		ver		6.3
-%define		patchlevel	5
+%define		patchlevel	6
 
-Summary:	Library for reading lines from a terminal
+Summary:	GNU Readline library
 Name:		readline
 Version:	%{ver}%{?patchlevel:.%{patchlevel}}
 Release:	1
 License:	GPL
-Group:		Libraries
+Group:		Core/Libraries
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{ver}.tar.gz
 # Source0-md5:	33c8fb279e981274f485fd91da77e94a
 Source1:	%{name}-sys_inputrc
-#Patch1000:	%{name}-patchlevel-%{patchlevel}.patch
 %patchset_source -f http://ftp.gnu.org/gnu/readline/readline-6.3-patches/readline63-%03g 1 %{patchlevel}
 URL:		http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 BuildRequires:	autoconf
@@ -21,27 +20,22 @@ Requires(post,postun):	/usr/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The "readline" library will read a line from the terminal and return
-it, allowing the user to edit the line with the standard emacs editing
-keys. It allows the programmer to give the user an easier-to-use and
-more intuitive interface.
+The GNU Readline library provides a set of functions for use by
+applications that allow users to edit command lines as they are typed
+in.
 
 %package devel
-Summary:	file for developing programs that use the readline library
+Summary:	Header files and libraries for readline development
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	ncurses-devel
 
 %description devel
-The "readline" library will read a line from the terminal and return
-it, using prompt as a prompt. If prompt is null, no prompt is issued.
-The line returned is allocated with malloc(3), so the caller must free
-it when finished. The line returned has the final newline removed, so
-only the text of the line remains.
+This package contains the header files and libraries needed
+to develop programs that use the readline library.
 
 %prep
 %setup -qn %{name}-%{ver}
-#%patch1000 -p0
 %patchset_patch -p2 1 %{patchlevel}
 
 %build

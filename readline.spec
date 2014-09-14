@@ -1,5 +1,7 @@
+# "patchset" feature comes from PLD Linux, git://git.pld-linux.org/packages/ncurses.git
+
 %define		ver		6.3
-%define		patchlevel	6
+%define		patchlevel	8
 
 Summary:	GNU Readline library
 Name:		readline
